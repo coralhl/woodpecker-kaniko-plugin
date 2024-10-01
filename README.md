@@ -1,4 +1,4 @@
-# plugin-kaniko
+# woodpecker-kaniko-plugin
 
 A thin shim-wrapper around the official [Google Kaniko](https://cloud.google.com/blog/products/gcp/introducing-kaniko-build-container-images-in-kubernetes-and-google-container-builder-even-without-root-access) Docker image to make it behave similar to the [Woodpecker Docker Buildx](https://woodpecker-ci.org/plugins/Docker%20Buildx) plugin.
 
