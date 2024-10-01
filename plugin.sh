@@ -24,10 +24,7 @@ prerun_command() {
     if [ "${PLUGIN_PRERUN:-}" ]; then
         echo "Executing prerun command: $PLUGIN_PRERUN"
         # Executing the specified command
-        sh -c "$PLUGIN_PRERUN"
-
-        # Checking status of command execution
-        if [ $? -ne 0 ]; then
+        if ! sh -c "$PLUGIN_PRERUN"; then
             echo "Prerun command failed."
             exit 1
         fi
