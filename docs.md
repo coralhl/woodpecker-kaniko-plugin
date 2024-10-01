@@ -1,11 +1,11 @@
 ---
 name: Kaniko
-author: Woodpecker Authors
+author: Woodpecker Authors and coralhl
 description: Plugin to build container images without root privileges
 tags: [docker, podman, container, build]
-containerImage: woodpeckerci/plugin-kaniko
-containerImageUrl: https://hub.docker.com/r/woodpeckerci/plugin-kaniko
-url: https://github.com/woodpecker-ci/plugin-kaniko
+containerImage: coralhl/woodpecker-kaniko-plugin
+containerImageUrl: https://hub.docker.com/r/coralhl/woodpecker-kaniko-plugin
+url: https://github.com/coralhl/woodpecker-kaniko-plugin
 ---
 
 Settings can be defined using the `settings` option for woodpecker plugins. All available settings and their defaults are listed below.
@@ -26,6 +26,7 @@ Settings can be defined using the `settings` option for woodpecker plugins. All 
 
 | Settings Name         | Default | Description                                                                                                                                      |
 | --------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `prerun`              | `.`     | runs command before building, if specified                                                                                                       |
 | `context`             | `.`     | sets the path of the build context to use                                                                                                        |
 | `build-args`          | _none_  | sets custom build arguments for the build                                                                                                        |
 | `build-args-from-env` | _none_  | forwards environment variables as custom arguments to the build                                                                                  |

@@ -14,3 +14,5 @@ sha256:*
 # ide files
 .vscode
 .idea
+
+build.sh

@@ -7,21 +7,17 @@ when:
       - renovate/*
 
 variables:
-  - &platforms 'linux/amd64,linux/arm64,linux/s390x'
-  - &buildx-plugin 'woodpeckerci/plugin-docker-buildx:4.2.0'
+  - &platforms "linux/amd64,linux/arm64,linux/s390x"
+  - &buildx-plugin "coralhl/woodpecker-kaniko-plugin"
   # vars used on push / tag events only
   - publish_logins: &publish_logins
       # Default DockerHub login
-      - registry: https://index.docker.io/v1/
-        username: woodpeckerbot
-        password:
-          from_secret: docker_password
-      # Additional Quay.IO login
-      - registry: https://quay.io
-        username: 'woodpeckerci+wp_ci'
-        password:
-          from_secret: QUAY_IO_TOKEN
-  - &publish_repos 'docker.io/woodpeckerci/plugin-kaniko,quay.io/woodpeckerci/plugin-kaniko'
+      registry: docker.io
+      username:
+        from_secret: dockerhub_username
+      password:
+        from_secret: dockerhub_password
+  - &publish_repos "coralhl/woodpecker-kaniko-plugin"
 
 steps:
   lint:
@@ -56,7 +52,7 @@ steps:
       repo: *publish_repos
       platforms: *platforms
       tags: next
-      logins: *publish_logins
+      <<: *publish_logins
     when:
       branch: ${CI_REPO_DEFAULT_BRANCH}
       event: push
@@ -69,6 +65,6 @@ steps:
       auto_tag: true
       # remove line below if you can read it on a release branch and it's not the latest release branch
       tags: latest
-      logins: *publish_logins
+      <<: *publish_logins
     when:
       event: tag

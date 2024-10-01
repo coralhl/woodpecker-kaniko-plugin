@@ -9,6 +9,6 @@ steps:
     settings:
       release_branch: ${CI_REPO_DEFAULT_BRANCH}
       forge_type: github
-      git_email: woodpecker-bot@obermui.de
+      git_email: coralhl@gmail.com
       github_token:
         from_secret: GITHUB_TOKEN

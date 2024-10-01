@@ -7,12 +7,13 @@ Example `.woodpecker.yaml`:
 ```yaml
 steps:
 - name: publish
-  image: woodpeckerci/plugin-kaniko
+  image: coralhl/woodpecker-kaniko-plugin
   settings:
     registry: registry.example.com # if not provided index.docker.io is used
     repo: registry.example.com/example-project
     tags: ${CI_COMMIT_SHA}
     cache: true
+    prerun: ls -la # executing prerun command
     skip_tls_verify: false # set to true for testing registries ONLY with self-signed certs
     build_args:
     - COMMIT_SHA=${CI_COMMIT_SHA}
@@ -28,7 +29,7 @@ Pushing to GCR:
 ```yaml
 steps:
 - name: publish
-  image: woodpeckerci/plugin-kaniko
+  image: coralhl/woodpecker-kaniko-plugin
   settings:
     registry: gcr.io
     repo: example.com/example-project
@@ -52,7 +53,7 @@ steps:
       - go build
       - make versiontags > .tags
 - name: publish
-  image: woodpeckerci/plugin-kaniko
+  image: coralhl/woodpecker-kaniko-plugin
   settings:
     registry: registry.example.com
     repo: registry.example.com/example-project
@@ -75,7 +76,7 @@ steps:
       - go get
       - go build
 - name: publish
-  image: woodpeckerci/plugin-kaniko
+  image: coralhl/woodpecker-kaniko-plugin
   settings:
     registry: registry.example.com
     repo: registry.example.com/example-project
@@ -90,7 +91,7 @@ steps:
 ## Test that it can build
 
 ```bash
-docker run -it --rm -w /src -v $PWD:/src -e PLUGIN_USERNAME=${DOCKER_USERNAME} -e PLUGIN_PASSWORD=${DOCKER_PASSWORD} -e PLUGIN_REPO=woodpeckerci/plugin-kaniko-test -e PLUGIN_TAGS=test -e PLUGIN_DOCKERFILE=Dockerfile.test woodpeckerci/plugin-kaniko
+docker run -it --rm -w /src -v $PWD:/src -e PLUGIN_USERNAME=${DOCKER_USERNAME} -e PLUGIN_PASSWORD=${DOCKER_PASSWORD} -e PLUGIN_REPO=coralhl/woodpecker-kaniko-plugin-test -e PLUGIN_TAGS=test -e PLUGIN_DOCKERFILE=Dockerfile.test coralhl/woodpecker-kaniko-plugin
 ```
 
 ## Test that caching works
@@ -109,7 +110,7 @@ Add the following lines to plugin.sh's final command and build a new image from 
 ```
 
 ```bash
-docker build -t woodpeckerci/plugin-kaniko .
+docker build -t coralhl/woodpecker-kaniko-plugin .
 ```
 
 
@@ -123,11 +124,11 @@ docker run -v $PWD:/cache gcr.io/kaniko-project/warmer:latest --verbosity=debug 
 Run the builder (on the host network to be able to access the registry, if any specified) with mounting the local disk cache, this example pushes to Docker Hub:
 
 ```bash
-docker run --net=host -it --rm -w /src -v $PWD:/cache -v $PWD:/src -e PLUGIN_USERNAME=${DOCKER_USERNAME} -e PLUGIN_PASSWORD=${DOCKER_PASSWORD} -e PLUGIN_REPO=woodpeckerci/plugin-kaniko-test -e PLUGIN_TAGS=test -e PLUGIN_DOCKERFILE=Dockerfile.test -e PLUGIN_CACHE=true woodpeckerci/plugin-kaniko
+docker run --net=host -it --rm -w /src -v $PWD:/cache -v $PWD:/src -e PLUGIN_USERNAME=${DOCKER_USERNAME} -e PLUGIN_PASSWORD=${DOCKER_PASSWORD} -e PLUGIN_REPO=coralhl/woodpecker-kaniko-plugin-test -e PLUGIN_TAGS=test -e PLUGIN_DOCKERFILE=Dockerfile.test -e PLUGIN_CACHE=true coralhl/woodpecker-kaniko-plugin
 ```
 
 The very same example just pushing to GCR instead of Docker Hub:
 
 ```bash
-docker run --net=host -it --rm -w /src -v $PWD:/cache -v $PWD:/src -e PLUGIN_REGISTRY=gcr.io -e PLUGIN_REPO=paas-dev1/kaniko-test -e PLUGIN_TAGS=test -e PLUGIN_DOCKERFILE=Dockerfile.test -e PLUGIN_CACHE=true -e PLUGIN_JSON_KEY="$(<$HOME/google-application-credentials.json)" woodpeckerci/plugin-kaniko
+docker run --net=host -it --rm -w /src -v $PWD:/cache -v $PWD:/src -e PLUGIN_REGISTRY=gcr.io -e PLUGIN_REPO=paas-dev1/kaniko-test -e PLUGIN_TAGS=test -e PLUGIN_DOCKERFILE=Dockerfile.test -e PLUGIN_CACHE=true -e PLUGIN_JSON_KEY="$(<$HOME/google-application-credentials.json)" coralhl/woodpecker-kaniko-plugin
 ```

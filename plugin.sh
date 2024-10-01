@@ -18,7 +18,24 @@ concatenate_strings() {
 
 export PATH="$PATH:/kaniko/"
 
-REGISTRY=${PLUGIN_REGISTRY:-https://index.docker.io/v1/}
+REGISTRY=${PLUGIN_REGISTRY:-docker.io}
+
+prerun_command() {
+    if [ "${PLUGIN_PRERUN:-}" ]; then
+        echo "Executing prerun command: $PLUGIN_PRERUN"
+        # Executing the specified command
+        sh -c "$PLUGIN_PRERUN"
+
+        # Checking status of command execution
+        if [ $? -ne 0 ]; then
+            echo "Prerun command failed."
+            exit 1
+        fi
+    fi
+}
+
+# Run command before building, if specified
+prerun_command
 
 if [ -f "${PWD}/${PLUGIN_ENV_FILE:-}" ]; then
     # shellcheck disable=SC3001
@@ -28,6 +45,9 @@ if [ -f "${PWD}/${PLUGIN_ENV_FILE:-}" ]; then
 fi
 
 if [ "${PLUGIN_USERNAME:-}" ] || [ "${PLUGIN_PASSWORD:-}" ]; then
+    if [ "$PLUGIN_REGISTRY" = "docker.io" ] ; then
+        REGISTRY="https://index.docker.io/v1/"
+    fi
     DOCKER_AUTH=$(echo -n "${PLUGIN_USERNAME}:${PLUGIN_PASSWORD}" | base64 | tr -d "\n")
 
     cat > /kaniko/.docker/config.json <<DOCKERJSON
@@ -127,6 +147,11 @@ if [ -n "${PLUGIN_MIRRORS:-}" ]; then
 fi
 
 DESTINATIONS=""
+
+if [ "$PLUGIN_REGISTRY" = "docker.io" ] ; then
+    REGISTRY="docker.io"
+fi
+
 if [ "${PLUGIN_DRY_RUN:-}" = "true" ] || [ -z "${PLUGIN_REPO:-}" ]; then
     DESTINATIONS="--no-push"
     # Cache is not valid with --no-push
