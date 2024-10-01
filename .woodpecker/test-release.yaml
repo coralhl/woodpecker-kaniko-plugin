@@ -34,6 +34,7 @@ steps:
 
   build-dryrun:
     image: *buildx-plugin
+    privileged: true
     depends_on:
       - lint
     settings:
@@ -48,6 +49,7 @@ steps:
 
   release-next:
     image: *buildx-plugin
+    privileged: true
     settings:
       repo: *publish_repos
       platforms: *platforms
@@ -59,6 +61,7 @@ steps:
 
   release-tag:
     image: *buildx-plugin
+    privileged: true
     settings:
       repo: *publish_repos
       platforms: *platforms
