@@ -4,7 +4,7 @@
 
 ### ❤️ Thanks to all contributors! ❤️
 
-@6543, @CrimsonFez, @nicolas-r, @qwerty287, @tkikuchi2000, @ztelliot
+@6543, @CrimsonFez, @coralhl, @nicolas-r, @qwerty287, @tkikuchi2000, @ztelliot
 
 ### 💥 Breaking changes
 
@@ -39,6 +39,7 @@
 
 ### Misc
 
+- 🎉 Release 1.0.0 [[#1](https://github.com/coralhl/woodpecker-kaniko-plugin/pull/1)]
 - Update pipeline to use lates buildx plugin [[#37](https://github.com/coralhl/woodpecker-kaniko-plugin/pull/37)]
 - [pre-commit.ci] pre-commit autoupdate [[#33](https://github.com/coralhl/woodpecker-kaniko-plugin/pull/33)]
 - Add CODEOWNERS [[#30](https://github.com/coralhl/woodpecker-kaniko-plugin/pull/30)]
