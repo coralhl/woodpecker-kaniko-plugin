@@ -42,3 +42,4 @@ Settings can be defined using the `settings` option for woodpecker plugins. All 
 | `insecure`            | `false` | push images to a plain HTTP registry.                                                                                                            |
 | `insecure-pull`       | `false` | pull images from a plain HTTP registry.                                                                                                          |
 | `insecure-registry`   | _none_  | use plain HTTP requests when accessing the specified registry.                                                                                   |
+
